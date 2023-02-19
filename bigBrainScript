@@ -1,0 +1,60 @@
+HttpService = game:GetService("HttpService") -- dont change anything until line 35,36,41,42 if u know what ur doing
+wait(5) -- change this to whatever for how long u want it to load
+
+local loop = true
+-- TOGGLE RENDER OPTIMIZED FOR AFK USE
+getgenv().renderFPS = 30; -- when its toggled off, that is the fps that it runs at, syn only
+getgenv().unrenderFPS = 5; -- when its toggled on, that is the fps that it runs at, syn only
+getgenv().tabOutDetect = true; -- if true, if u go to something like google it auto turns on
+getgenv().keybind = "z"; -- use a non capital letter, its the keybind
+getgenv().texto = ""; -- example, if its "Weenie" its going to display Weenie
+getgenv().antiAfk = true; -- if true, roblox wont kick you, never
+getgenv().discordServerJoin = false; -- change to true if u wanna join
+getgenv().autoToggled = true; -- if true, when executed it turns on automatically
+getgenv().screenSaver = false; -- just moves the text like a dvd screen
+getgenv().screenSaverSpeed = 0.002; -- changes the DVD effect, if low fps it ruins it
+getgenv().showtext = true; -- just makes the screen basic
+getgenv().showPlayerUser = true; -- shows who it is if you have multiple accounts
+loadstring(game:HttpGet('https://raw.githubusercontent.com/hunter7627/shzrtf/main/s'))() -- script's loadstring
+
+
+wait(1) -- loading for webhook notify
+local GetName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId)
+
+local responce = syn.request( -- synapse x only sadly
+{
+    Url = Webhook_URL,
+    Method = 'POST',
+    Headers = {
+        ['Content-Type'] = 'application/json'
+    },
+    Body = HttpService:JSONEncode({
+        ["content"] = "",
+        ["embeds"] = {{
+            ["title"] = "**current game id : **"..game.PlaceId,
+            ["description"] = game.Players.LocalPlayer.Name .. " JOINED : ".. GetName.Name,
+            ["type"] = "rich",
+            ["color"] = tonumber(0xffffff),
+            ["fields"] = {
+                {
+                    ["name"] = "TIME AND DATE",
+                    ["value"] = os.date("%x | %I:%M:%S    %p  time zone: %Z", os.time()),
+                    ["inline"] = true
+                }
+            }
+        }}
+    })
+    
+}
+)
+
+if game.PlaceId == afkGame then -- change this to whatever game u want, the game u want to afk on
+    wait(afkTime) -- change this to how many seconds u want - 1 min is 60 seconds, 1 hour is 3600 seconds
+    game:GetService("TeleportService"):Teleport(rejoinGame, LocalPlayer) -- joining to rejoin game
+end
+
+
+if game.PlaceId == rejoinGame then -- change this to whatever game u want
+
+    game:GetService("TeleportService"):Teleport(afkGame, LocalPlayer) -- joining to afk game u want
+end
