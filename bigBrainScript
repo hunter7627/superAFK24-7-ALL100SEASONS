@@ -54,7 +54,7 @@ if game.PlaceId == afkGame then -- change this to whatever game u want, the game
 end
 
 
-if game.PlaceId ~= afkGame then -- change this to whatever game u want
+if game.PlaceId == afkGame then -- change this to whatever game u want
 
     game:GetService("TeleportService"):Teleport(afkGame, LocalPlayer) -- joining to afk game u want
 end
